@@ -1,9 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-
+import os
+import re
 from setuptools import setup
 
+with open(os.path.join('{{ cookiecutter.project_slug }}', '__init__.py')) as ver_file:
+    for line in ver_file:
+        if line.startswith('__version__'):
+            version=re.sub("'", "", line[line.index("'"):])
 
 with open('README.rst') as readme_file:
     readme = readme_file.read()
@@ -32,7 +37,7 @@ test_requirements = [
 
 setup(
     name='{{ cookiecutter.project_slug }}',
-    version='{{ cookiecutter.version }}',
+    version=version,
     description="{{ cookiecutter.project_short_description }}",
     long_description=readme + '\n\n' + history,
     author="{{ cookiecutter.full_name.replace('\"', '\\\"') }}",
@@ -64,8 +69,6 @@ setup(
         '{{ license_classifiers[cookiecutter.open_source_license] }}',
 {%- endif %}
         'Natural Language :: English',
-        "Programming Language :: Python :: 2",
-        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.3',
